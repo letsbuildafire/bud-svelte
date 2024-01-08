@@ -1,5 +1,5 @@
 {
-  "name": "@roots/bud-svelte",
+  "name": "bud-svelte-loader",
   "version": "0.0.1",
   "description": "svelte support for @roots/bud projects",
   "engines": {
