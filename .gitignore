@@ -12,6 +12,7 @@
 **/lib
 **/node_modules
 **/profiles
+**/.direnv
 
 coverage
 sources/@repo/docs/content/dev/api/**/*

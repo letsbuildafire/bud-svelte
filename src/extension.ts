@@ -23,35 +23,35 @@ export default class SvelteBud extends Extension<
    * {@link Extension.reister}
    */
   @bind
-  public override async register(bud: Bud) {
+  public override async register({hooks, path, build}: Bud) {
     /** Source loader */
     const loader = await this.resolve(`svelte-loader`, import.meta.url)
     if (!loader) return this.logger.error(`svelte-loader not found`)
 
     /** Set loader alias */
-    bud.hooks.on(`build.resolveLoader.alias`, (aliases = {}) => ({
+    hooks.on(`build.resolveLoader.alias`, (aliases = {}) => ({
       ...aliases,
       [`svelte-loader`]: loader,
     }))
 
     /** .svelte */
-    bud.build
+    build
       .setLoader(`svelte`, `svelte-loader`)
       .setItem(`svelte`, {
         ident: `svelte`,
         loader: `svelte`,
       })
 
-    await bud.hooks
+    await hooks
       .on(`build.resolve.extensions`, (extensions = new Set()) =>
         extensions.add(`.svelte`),
       )
       .hooks.on(`build.module.rules.before`, (rules = []) => [
         ...rules,
         {
-          include: [bud.path(`@src`)],
-          test: bud.hooks.filter(`pattern.svelte`),
-          use: [bud.build.items.svelte],
+          include: [path(`@src`)],
+          test: /\.svelte$/,
+          use: [build.items.svelte],
         },
       ])
       .extensions.add({
